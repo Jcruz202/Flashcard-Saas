@@ -18,10 +18,10 @@ export default function Home() {
           <SignedOut>
             <Button color = "inherit" href="/sign-in">Login</Button>
             <Button color = "inherit" href="/sign-up">Sign up</Button>
+            </SignedOut>
             <SignedIn>
               <UserButton />
             </SignedIn>
-          </SignedOut>
         </Toolbar>
       </AppBar>
 

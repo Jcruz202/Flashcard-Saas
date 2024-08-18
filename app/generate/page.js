@@ -1,8 +1,9 @@
 
 'use client'
+import { db } from "@/firebase"
 import { useUser } from "@clerk/nextjs"
 import { Box, Button, Card, CardActionArea, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, TextField, Typography } from "@mui/material"
-import { getDoc } from "firebase/firestore"
+import { collection, doc, getDoc, writeBatch } from "firebase/firestore"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -45,7 +46,7 @@ export default function Generate() {
         }
 
         const batch = writeBatch(db)
-        const userDocRef = doc(collection(db, 'users', user.id))
+        const userDocRef = doc(collection(db, 'users'), user.id)
         const docSnap = await getDoc(userDocRef)
         
         if (docSnap.exists()){
@@ -157,7 +158,7 @@ export default function Generate() {
                 ))}
             </Grid>
             <Box sx={{mt:4, display:'flex', justifyContent:'center'}}>
-                <Button variant="contained" color="secondary" onClick={handleOpen}>
+                <Button variant="contained" color="secondary" onClick={handleOpen} sx={{mb:2}}>
                     Save
                 </Button>
             </Box>
