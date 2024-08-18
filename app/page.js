@@ -1,11 +1,43 @@
+'use client'
 import Image from "next/image";
 import getStripe from "@/utils/get-stripe";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { AppBar, Box, Button, Container, Grid, Toolbar, Typography } from "@mui/material";
 import Head from "next/head";
-
+import { useRouter } from "next/navigation"
+import { POST } from "./api/checkout_session/route";
 
 export default function Home() {
+  const router = useRouter()
+
+  const handleGenerate=()=> {
+    router.push('/generate')
+  }
+
+  const handleSubmit = async () =>{
+    const checkoutSession = await fetch('/api/checkout_session', {
+      method: 'POST',
+      headers: {
+        origin: 'http://localhost:3000'
+      },
+    })
+
+    const checkoutSessionJson = await checkoutSession.json()
+
+    if (checkoutSession.statusCode === 500){
+      console.error(checkoutSession.message)
+      return
+    }
+
+    const stripe = await getStripe()
+    const {error} = await stripe.redirectToCheckout({
+      sessionId: checkoutSessionJson.id
+    })
+
+    if (error){
+      console.warn(error.message)
+    }
+  }
   return (
     <Container maxWidth="100vw">
       <Head>
@@ -31,7 +63,9 @@ export default function Home() {
           {''}
           The easiest way to make flashcard from your text
         </Typography>
-        <Button variant="contained" color="primary" sx={{mt:2}}>Get Started</Button>
+        <Button variant="contained" color="primary" sx={{mt:2}} onClick={() => {
+          handleGenerate()
+        }}>Get Started</Button>
       </Box>
 
       <Box sx ={{my: 6}}>
@@ -94,7 +128,7 @@ export default function Home() {
             <Typography>
               {''}
               Unlimited flashcards and storage, with priority support.</Typography>
-              <Button variant="contained" color="primary" sx={{mt: 2}}>Choose Pro</Button>
+              <Button variant="contained" color="primary" sx={{mt: 2}} onClick={handleSubmit}>Choose Pro</Button>
             </Box>
           </Grid>
         </Grid>

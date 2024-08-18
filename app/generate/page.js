@@ -13,7 +13,7 @@ export default function Generate() {
     const [flipped, setFlipped] = useState([])
     const [text, setText] = useState('')
     const [name, setName] = useState('')
-    const [open, setOpen] = useState(true)
+    const [open, setOpen] = useState(false)
     const router = useRouter()
 
     const handleSubmit = async () => {
@@ -50,7 +50,7 @@ export default function Generate() {
         const docSnap = await getDoc(userDocRef)
         
         if (docSnap.exists()){
-            const collections = docSnap.data.flashcards || []
+            const collections = docSnap.data().flashcards || []
             if (collections.find((f) => f.name === name)){
                 alert('Flashcard collection with the same name already exists.')
                 return
