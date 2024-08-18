@@ -2,10 +2,11 @@
 'use client'
 import { db } from "@/firebase"
 import { useUser } from "@clerk/nextjs"
-import { Box, Button, Card, CardActionArea, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, TextField, Typography } from "@mui/material"
+import { AppBar, Box, Button, Card, CardActionArea, CardContent, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, TextField, Toolbar, Typography } from "@mui/material"
 import { collection, doc, getDoc, writeBatch } from "firebase/firestore"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { useResponsiveFont } from '../hooks/useResponsiveFont';
 
 export default function Generate() {
     const {isLoaded, isSignedIn, user} = useUser()
@@ -14,15 +15,26 @@ export default function Generate() {
     const [text, setText] = useState('')
     const [name, setName] = useState('')
     const [open, setOpen] = useState(false)
+    const [loading, setLoading] = useState(false)
     const router = useRouter()
+    const [frontFontSize, frontTextRef] = useResponsiveFont(20);
+    const [backFontSize, backTextRef] = useResponsiveFont(20);
 
     const handleSubmit = async () => {
+        setLoading(true)
         fetch('api/generate', {
             method: 'POST',
             body: text,
         })
         .then((res) => res.json())
-        .then((data) => setFlashcards(data))
+        .then((data) => {
+            setFlashcards(data)
+            setLoading(false)
+        })
+        .catch((error) => {
+            console.error('Error:', error)
+            setLoading(false)
+        })
     }
 
     const handleCardClick = (id) => {
@@ -37,6 +49,9 @@ export default function Generate() {
     }
     const handleClose = () => {
         setOpen(false)
+    }
+    const handleGoHome = () =>{
+        router.push('/')
     }
 
     const saveFlashcards = async () => {
@@ -76,7 +91,18 @@ export default function Generate() {
     }
 
     return(
-    <Container maxWidth="md">
+    <Container maxWidth="100vw">
+        <AppBar position="static">
+        <Toolbar>
+            <Typography 
+                variant="h6"  
+                style={{flexGrow: 1, cursor: 'pointer'}} 
+                onClick={handleGoHome}
+                >
+                Study Buddy
+            </Typography>         
+        </Toolbar>
+      </AppBar>
         <Box sx={{
             mt: 4, mb:6, display:'flex', flexDirection:'column', alignItems: 'center'
         }}>
@@ -92,10 +118,14 @@ export default function Generate() {
                 sx={{mb:2}}
                 />
                 <Button 
-                variant="contained"
-                color="primary"
-                onClick={handleSubmit}
-                fullWidth> {''} Submit</Button>
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                    disabled={loading}
+                    fullWidth
+                >
+                    {loading ? 'Generating...' : 'Submit'}
+                </Button>
             </Paper>
         </Box>
         {flashcards.length > 0 && (
@@ -133,6 +163,7 @@ export default function Generate() {
                                             alignItems: 'center',
                                             padding: 2,
                                             boxSizing: 'border-box',
+                                            overflow: 'hidden', // Add this to prevent text overflow
                                         },
                                         '& > div > div:nth-of-type(2)':{
                                             transform: 'rotateY(180deg)',
@@ -140,12 +171,30 @@ export default function Generate() {
                                     }}>
                                         <div>
                                             <div>
-                                                <Typography variant="h5" component="div">
+                                                <Typography 
+                                                    ref={frontTextRef} 
+                                                    variant="h5" 
+                                                    component="div" 
+                                                    sx={{ 
+                                                        fontSize: `${frontFontSize}px`, 
+                                                        textAlign: 'center',
+                                                        wordWrap: 'break-word',
+                                                        overflowWrap: 'break-word',
+                                                        hyphens: 'auto',
+                                                        maxHeight: '100%',
+                                                        overflow: 'hidden'
+                                                    }}
+                                                >
                                                     {flashcard.front}
                                                 </Typography>
                                             </div>
                                             <div>
-                                                <Typography variant="h5" component="div">
+                                                <Typography 
+                                                    ref={backTextRef} 
+                                                    variant="h5" 
+                                                    component="div" 
+                                                    sx={{ fontSize: `${backFontSize}px`, textAlign: 'center' }}
+                                                >
                                                     {flashcard.back}
                                                 </Typography>
                                             </div>

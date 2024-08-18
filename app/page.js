@@ -13,6 +13,9 @@ export default function Home() {
   const handleGenerate=()=> {
     router.push('/generate')
   }
+  const handleMyFlashcards = () =>{
+    router.push('/flashcards')
+  }
 
   const handleSubmit = async () =>{
     const checkoutSession = await fetch('/api/checkout_session', {
@@ -41,12 +44,15 @@ export default function Home() {
   return (
     <Container maxWidth="100vw">
       <Head>
-        <title>Flashcard Saas</title>
+        <title>Study Buddy</title>
         <meta name="description" contents= "Create flashcard form your text" />
       </Head>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6"  style={{flexGrow: 1}}>Flashcard Saas</Typography>
+          <Typography variant="h6"  style={{flexGrow: 1}}>Study Buddy</Typography>
+          <SignedIn>
+            <Button variant="h4" onClick={() => {handleMyFlashcards()}}>My FlashCards</Button>
+          </SignedIn>
           <SignedOut>
             <Button color = "inherit" href="/sign-in">Login</Button>
             <Button color = "inherit" href="/sign-up">Sign up</Button>
@@ -58,14 +64,12 @@ export default function Home() {
       </AppBar>
 
       <Box sx={{textAlign:'center', my: 4,}}>
-        <Typography variant="h2" gutterBottom>Welcome to Flashcard Saas</Typography>
+        <Typography variant="h2" gutterBottom>Welcome to Study Buddy</Typography>
         <Typography variant="h5" gutterBottom>
           {''}
           The easiest way to make flashcard from your text
         </Typography>
-        <Button variant="contained" color="primary" sx={{mt:2}} onClick={() => {
-          handleGenerate()
-        }}>Get Started</Button>
+        <Button variant="contained" color="primary" sx={{mt:2}} onClick={() => {handleGenerate()}}>Get Started</Button>
       </Box>
 
       <Box sx ={{my: 6}}>

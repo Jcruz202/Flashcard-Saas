@@ -17,7 +17,7 @@ When dealing with numerical data or dates, round to appropriate significant figu
 For language learning flashcards, include pronunciation guides where relevant.
 Use a consistent format for similar types of information across multiple flashcards.
 When creating flashcards for a series or set, ensure a logical progression of difficulty or complexity.
-Only generate 10 flashcards.
+Only generate 12 flashcards.
 
 Return in the following JSON format
 {
