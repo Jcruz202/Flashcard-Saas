@@ -16,7 +16,6 @@ export default function Home() {
   const router = useRouter()
   const [fadeOut, setFadeOut] = useState(false);
 
-
   const handleGenerate = () => {
       router.push('/generate')
   }
