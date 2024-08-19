@@ -6,12 +6,12 @@ import { collection, doc, getDoc, setDoc } from "firebase/firestore"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
-
+import Fade from '@mui/material/Fade';
 
 export default function Flashcards(){
     const {isLoaded, isSignedIn, user} = useUser()
     const [flashcards, setFlashcards] = useState([])
+    const [fadeOut, setFadeOut] = useState(false);
     const router = useRouter()
 
     useEffect(() => {
@@ -55,7 +55,9 @@ export default function Flashcards(){
                 backgroundColor: '#dad7cd',
             }}
             disableGutters
-        >            
+        >
+        <Fade in={!fadeOut} timeout={500}>
+            <div>
         <Box sx={{ flex: '1 0 auto' }}>
             <AppBar position="static" sx={{ backgroundColor: '#588157'}}>
                     <Toolbar>
@@ -79,7 +81,7 @@ export default function Flashcards(){
             <Grid
             container
             spacing={3}
-            sx={{mt: 4}}>
+            sx={{mt: 4, mb: 4}}>
                 {flashcards.map((flashcard, index)=>(
                 <Grid item xs={12} sm={6} md={4} key={index}>
                     <Card
@@ -112,6 +114,8 @@ export default function Flashcards(){
             </Grid>
             </Box>
             </Box>
+            </div>
+      </Fade>
                   {/* -------------------------------------------------------------- */}
             <Box
                 component="footer"

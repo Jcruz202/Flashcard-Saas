@@ -7,6 +7,7 @@ import { collection, doc, getDoc, writeBatch } from "firebase/firestore"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useResponsiveFont } from '../hooks/useResponsiveFont';
+import Fade from '@mui/material/Fade';
 
 export default function Generate() {
     const {isLoaded, isSignedIn, user} = useUser()
@@ -16,9 +17,11 @@ export default function Generate() {
     const [name, setName] = useState('')
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [fadeOut, setFadeOut] = useState(false);
     const router = useRouter()
     const [frontFontSize, frontTextRef] = useResponsiveFont(20);
     const [backFontSize, backTextRef] = useResponsiveFont(20);
+    
 
     const handleSubmit = async () => {
         setLoading(true)
@@ -104,7 +107,9 @@ export default function Generate() {
             backgroundColor: '#dad7cd',
         }}
         disableGutters
-    >            
+    >
+        <Fade in={!fadeOut} timeout={500}>
+        <div>
     <Box sx={{ flex: '1 0 auto' }}>
         <AppBar position="static" sx={{ backgroundColor: '#588157'}}>
         <Toolbar>
@@ -276,6 +281,8 @@ export default function Generate() {
         </Dialog>
     </Box>
     </Box>
+    </div>
+      </Fade>
     {/* -------------------------------------------------------------- */}
     <Box
         component="footer"

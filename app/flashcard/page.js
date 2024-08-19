@@ -8,6 +8,7 @@ import { AppBar, Box, Button, Card, CardActionArea, CardContent, Container,Grid,
 import { useResponsiveFont } from '../hooks/useResponsiveFont';
 import { useRouter } from "next/navigation"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Fade from '@mui/material/Fade';
 
 export default function Flashcard(){
     const {isLoaded, isSignedIn, user} = useUser()
@@ -15,6 +16,7 @@ export default function Flashcard(){
     const [flipped, setFlipped] = useState([])
     const [frontFontSize, frontTextRef] = useResponsiveFont(20);
     const [backFontSize, backTextRef] = useResponsiveFont(20);
+    const [fadeOut, setFadeOut] = useState(false);
     const searchParams = useSearchParams()
     const search = searchParams.get('id')
     const router = useRouter()
@@ -53,6 +55,8 @@ export default function Flashcard(){
 
     return(
         <Container maxWidth="100vw" sx={{ backgroundColor: '#dad7cd', minHeight: '100vh' }} disableGutters>
+            <Fade in={!fadeOut} timeout={500}>
+            <div>
             <AppBar position="static" sx={{ backgroundColor: '#588157'}}>
                 <Toolbar>
                     <Typography 
@@ -158,6 +162,8 @@ export default function Flashcard(){
                         ))}
             </Grid>
             </Box>
+            </div>
+      </Fade>
 {/* -------------------------------------------------------------- */}
             <Box
                 component="footer"

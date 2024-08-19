@@ -9,22 +9,27 @@ import { POST } from "./api/checkout_session/route";
 import InputIcon from '@mui/icons-material/Input';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import SchoolIcon from '@mui/icons-material/School';
+import { useState } from 'react';
+import Fade from '@mui/material/Fade';
 
 export default function Home() {
   const router = useRouter()
+  const [fadeOut, setFadeOut] = useState(false);
 
-  const handleGenerate=()=> {
-    router.push('/generate')
+
+  const handleGenerate = () => {
+      router.push('/generate')
   }
+
   const handleMyFlashcards = () =>{
-    router.push('/flashcards')
+      router.push('/flashcards')
   }
 
   const handleSubmit = async () =>{
     const checkoutSession = await fetch('/api/checkout_session', {
       method: 'POST',
       headers: {
-        origin: 'http://localhost:3000'
+        origin: 'https://study-buddy-sandy.vercel.app/'
       },
     })
 
@@ -46,6 +51,8 @@ export default function Home() {
   }
   return (
     <Container maxWidth="100vw" sx={{ backgroundColor: '#dad7cd', minHeight: '100vh' }} disableGutters>
+      <Fade in={!fadeOut} timeout={500}>
+        <div>
       <Head>
         <title>Study Buddy</title>
         <meta name="description" contents= "Create flashcard form your text" />
@@ -70,7 +77,9 @@ export default function Home() {
         <Typography variant="h2" gutterBottom>Welcome to Study Buddy</Typography>
         <Typography variant="h5" gutterBottom>
           {''}
-          Learning has never been easier. Using Flashcards makes learning and remembering effortless. Start using Study Buddy for free. 
+          Unlock your learning potential with Study Buddy. Our innovative flashcard system transforms studying into an effortless and enjoyable experience. 
+          Boost your memory, ace your exams, and master new skills—all at your own pace. Start your journey to effortless learning today. 
+          Try Study Buddy for free and revolutionize the way you learn.
         </Typography>
         <Button variant="contained" sx={{mt:2, backgroundColor: '#344e41' , '&:hover': {backgroundColor: '#a3b18a',},}} onClick={() => {handleGenerate()}}>Get Started</Button>
       </Box>
@@ -101,7 +110,7 @@ export default function Home() {
               >
                 <Typography variant="h6" gutterBottom>{title}</Typography>
                 <Typography>
-                  {index === 0 && 'Simply input your text and let AI do the rest.'}
+                  {index === 0 && 'Simply input your text and let AI do the rest. Study with no sweat.'}
                   {index === 1 && 'Our AI intelligently breaks down your text into concise flashcards, perfect for studying.'}
                   {index === 2 && 'Access your flashcards from any device, at any time. Study on the go with ease.'}
                 </Typography>
@@ -172,6 +181,8 @@ export default function Home() {
         </Grid>
       </Box>
       </Box>
+      </div>
+      </Fade>
       {/* -------------------------------------------------------------- */}
       <Box
         component="footer"
@@ -187,6 +198,7 @@ export default function Home() {
           © 2024 Study Buddy
         </Typography>
       </Box>
+      
     </Container>
   )
 }
