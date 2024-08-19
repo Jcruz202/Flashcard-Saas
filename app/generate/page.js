@@ -45,6 +45,10 @@ export default function Generate() {
     }
 
     const handleOpen = () => {
+        if (!isSignedIn) {
+            alert('The user must be logged in to save Flashcards')
+            return
+        }
         setOpen(true)
     }
     const handleClose = () => {

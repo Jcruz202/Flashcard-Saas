@@ -8,12 +8,12 @@ export default function SignInPage(){
         <AppBar position="static" sx={{backgroundColor: "#588157"}}>
             <Toolbar>
                 <Typography variant="h6" sx={{flexGrow: 1}}>Study Buddy</Typography>
-                <Button variant="outlined" color="inherit" sx={{mr: 1}}>
+                <Button color="inherit" sx={{mr: 1}}>
                     <Link href="/sign-in" passHref>
                         Login
                     </Link>
                 </Button>
-                <Button variant="outlined" color="inherit">
+                <Button color="inherit">
                     <Link href="/sign-up" passHref>
                         Sign Up
                     </Link>
