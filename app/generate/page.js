@@ -91,8 +91,18 @@ export default function Generate() {
     }
 
     return(
-    <Container maxWidth="100vw">
-        <AppBar position="static">
+        <Container 
+        maxWidth={false} 
+        sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            minHeight: '100vh',
+            backgroundColor: '#dad7cd',
+        }}
+        disableGutters
+    >            
+    <Box sx={{ flex: '1 0 auto' }}>
+        <AppBar position="static" sx={{ backgroundColor: '#588157'}}>
         <Toolbar>
             <Typography 
                 variant="h6"  
@@ -103,19 +113,32 @@ export default function Generate() {
             </Typography>         
         </Toolbar>
       </AppBar>
+      <Box sx={{paddingLeft: 3, paddingRight: 3}}>
         <Box sx={{
             mt: 4, mb:6, display:'flex', flexDirection:'column', alignItems: 'center'
         }}>
-            <Typography variant="h4"> Generate Flashcards</Typography>
+            <Typography variant="h4" gutterBottom> Generate Flashcards</Typography>
             <Paper sx={{p:4, width: '100%'}}>
-                <TextField value={text}
+            <TextField
+                value={text}
                 onChange={(e) => setText(e.target.value)}
                 label="Enter text"
                 fullWidth
                 multiline
                 rows={4}
                 variant="outlined"
-                sx={{mb:2}}
+                sx={{
+                    mb: 2,
+                    backgroundColor: '#f1faee',
+                    '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                        borderColor: '#588157',
+                    },
+                    },
+                    '& .MuiInputLabel-root.Mui-focused': {
+                    color: '#588157',
+                    },
+                }}
                 />
                 <Button 
                     variant="contained"
@@ -123,6 +146,7 @@ export default function Generate() {
                     onClick={handleSubmit}
                     disabled={loading}
                     fullWidth
+                    sx={{mt:2, backgroundColor: '#588157' , '&:hover': {backgroundColor: '#a3b18a',},}}
                 >
                     {loading ? 'Generating...' : 'Submit'}
                 </Button>
@@ -130,7 +154,7 @@ export default function Generate() {
         </Box>
         {flashcards.length > 0 && (
             <Box sx={{mt:4}}>
-            <Typography variant="h5">Flashcards Preview</Typography>
+            <Typography variant="h5" gutterBottom>Flashcards Preview</Typography>
             <Grid container spacing = {3}>
                 {flashcards.map((flashcard, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
@@ -163,7 +187,7 @@ export default function Generate() {
                                             alignItems: 'center',
                                             padding: 2,
                                             boxSizing: 'border-box',
-                                            overflow: 'hidden', // Add this to prevent text overflow
+                                            overflow: 'hidden',
                                         },
                                         '& > div > div:nth-of-type(2)':{
                                             transform: 'rotateY(180deg)',
@@ -207,7 +231,7 @@ export default function Generate() {
                 ))}
             </Grid>
             <Box sx={{mt:4, display:'flex', justifyContent:'center'}}>
-                <Button variant="contained" color="secondary" onClick={handleOpen} sx={{mb:2}}>
+                <Button variant="contained" color="secondary" onClick={handleOpen} sx={{mb: 2, backgroundColor: '#344e41', '&:hover': {backgroundColor: '#a3b18a',},}}>
                     Save
                 </Button>
             </Box>
@@ -225,17 +249,44 @@ export default function Generate() {
                 fullWidth
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                variant="outlined"/>
+                variant="outlined"
+                sx={{
+                    mb: 2,
+                    '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                        borderColor: '#588157',
+                    },
+                    },
+                    '& .MuiInputLabel-root.Mui-focused': {
+                    color: '#588157',
+                    },}}/>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>
+                <Button sx={{ color: '#344e41'}} onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button onClick={saveFlashcards}>
+                <Button sx={{ color: '#344e41'}} onClick={saveFlashcards}>
                     Save
                 </Button>
             </DialogActions>
         </Dialog>
+    </Box>
+    </Box>
+    {/* -------------------------------------------------------------- */}
+    <Box
+        component="footer"
+        sx={{
+          py: 3,
+          px: 2,
+          mt: 'auto',
+          backgroundColor: '#588157',
+          textAlign: 'center',
+        }}
+      >
+        <Typography variant="body2" color="text.secondary">
+          © 2024 Study Buddy
+        </Typography>
+      </Box>
     </Container>
     )
 }

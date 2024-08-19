@@ -2,10 +2,13 @@
 import Image from "next/image";
 import getStripe from "@/utils/get-stripe";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { AppBar, Box, Button, Container, Grid, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Container, Grid, Toolbar, Typography, Paper } from "@mui/material";
 import Head from "next/head";
 import { useRouter } from "next/navigation"
 import { POST } from "./api/checkout_session/route";
+import InputIcon from '@mui/icons-material/Input';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import SchoolIcon from '@mui/icons-material/School';
 
 export default function Home() {
   const router = useRouter()
@@ -42,14 +45,14 @@ export default function Home() {
     }
   }
   return (
-    <Container maxWidth="100vw">
+    <Container maxWidth="100vw" sx={{ backgroundColor: '#dad7cd', minHeight: '100vh' }} disableGutters>
       <Head>
         <title>Study Buddy</title>
         <meta name="description" contents= "Create flashcard form your text" />
       </Head>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: '#588157'}}>
         <Toolbar>
-          <Typography variant="h6"  style={{flexGrow: 1}}>Study Buddy</Typography>
+          <Typography variant="h6" style={{flexGrow: 1}}>Study Buddy</Typography>
           <SignedIn>
             <Button variant="h4" onClick={() => {handleMyFlashcards()}}>My FlashCards</Button>
           </SignedIn>
@@ -62,80 +65,127 @@ export default function Home() {
             </SignedIn>
         </Toolbar>
       </AppBar>
-
+      <Box sx={{paddingLeft: 3, paddingRight: 3}}>
       <Box sx={{textAlign:'center', my: 4,}}>
         <Typography variant="h2" gutterBottom>Welcome to Study Buddy</Typography>
         <Typography variant="h5" gutterBottom>
           {''}
-          The easiest way to make flashcard from your text
+          Learning has never been easier. Using Flashcards makes learning and remembering effortless. Start using Study Buddy for free. 
         </Typography>
-        <Button variant="contained" color="primary" sx={{mt:2}} onClick={() => {handleGenerate()}}>Get Started</Button>
+        <Button variant="contained" sx={{mt:2, backgroundColor: '#344e41' , '&:hover': {backgroundColor: '#a3b18a',},}} onClick={() => {handleGenerate()}}>Get Started</Button>
       </Box>
-
-      <Box sx ={{my: 6}}>
-        <Typography variant = "h4" gutterBottom>Features</Typography>
-        <Grid container spacing = {4}>
-          <Grid item xs = {12} md = {4}>
-            <Typography variant="h6" gutterBottom>Easy Text Input</Typography>
-            <Typography>
-              {''}
-              Simply input your text and let our software do the rest. Creating 
-              flashcards has never been easier</Typography>
-          </Grid>
-          <Grid item xs = {12} md = {4}>
-            <Typography variant="h6" gutterBottom>Smart FlashCards</Typography>
-            <Typography>
-              {''}
-              Our AI intelligently breaks down your text into concise
-              flashcards, perfect for studying</Typography>
-          </Grid>
-          <Grid item xs = {12} md = {4}>
-            <Typography variant="h6" gutterBottom>Accessible anywhere</Typography>
-            <Typography>
-              {''}
-              Access your flashcards from any device, at any time. Study on the go with ease.</Typography>
-          </Grid>
+      {/* -------------------------------------------------------------- */}
+      <Box sx={{my: 6}}>
+        <Typography variant="h4" align="center" sx={{mb:5, mt: 10}}>Features</Typography>
+        <Grid container spacing={4}>
+          {['Easy Text Input', 'Smart FlashCards', 'Accessible anywhere'].map((title, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <Box
+                sx={{
+                  backgroundColor: '#f1faee',
+                  border: '1px solid',
+                  borderColor: 'black',
+                  borderRadius: 2,
+                  p: 3,
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  transition: 'all 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    boxShadow: 3,
+                  }
+                }}
+              >
+                <Typography variant="h6" gutterBottom>{title}</Typography>
+                <Typography>
+                  {index === 0 && 'Simply input your text and let AI do the rest.'}
+                  {index === 1 && 'Our AI intelligently breaks down your text into concise flashcards, perfect for studying.'}
+                  {index === 2 && 'Access your flashcards from any device, at any time. Study on the go with ease.'}
+                </Typography>
+              </Box>
+            </Grid>
+          ))}
         </Grid>
       </Box>
       {/* -------------------------------------------------------------- */}
+      <Box sx={{ my: 8 }}>
+  <Typography variant="h4" align="center" sx={{ mb: 6 }}>How it works</Typography>
+  <Grid container spacing={4} justifyContent="center">
+    {[
+      { icon: <InputIcon fontSize="large" />, text: "Input a topic" },
+      { icon: <AutoAwesomeIcon fontSize="large" />, text: "AI will generate 12 flashcards" },
+      { icon: <SchoolIcon fontSize="large" />, text: "Learn and save flashcards" }
+    ].map((step, index) => (
+      <Grid item xs={12} sm={4} key={index}>
+        <Paper elevation={3} sx={{
+          p: 3,
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          backgroundColor: '#f1faee',
+        }}>
+          <Box sx={{ mb: 2, color: '#344e41' }}>{step.icon}</Box>
+          <Typography variant="h6" sx={{ mb: 1 }}>Step {index + 1}</Typography>
+          <Typography>{step.text}</Typography>
+        </Paper>
+      </Grid>
+    ))}
+  </Grid>
+</Box>
+      {/* -------------------------------------------------------------- */}
       <Box sx={{my: 6, textAlign:'center'}}>
-      <Typography variant = "h4" gutterBottom>Pricing</Typography>
-      <Grid container spacing = {4}>
-          <Grid item xs = {12} md = {6}>
-            <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2,
-              }}
+      <Typography variant = "h4" gutterBottom sx={{mb:2}}>Upgrade</Typography>
+      <Grid container spacing = {4} justifyContent="center" alignItems="center">
+          <Grid item xs = {12} md = {6}> 
+          <Box
+                sx={{
+                  backgroundColor: '#a3b18a',
+                  border: '1px solid',
+                  borderColor: 'black',
+                  borderRadius: 2,
+                  p: 3,
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  transition: 'all 0.3s ease-in-out',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    boxShadow: 3,
+                  }
+                }}
               >
-            <Typography variant="h5" gutterBottom>Basic</Typography>
+            <Typography variant="h5" gutterBottom>Pro</Typography>
             <Typography variant="h6" gutterBottom>$5 / month</Typography>
             <Typography>
               {''}
-              Access to basic flashcard feature and limited storage</Typography>
-              <Button variant="contained" color="primary" sx={{mt: 2}}>Choose Basic</Button>
-            </Box>
-          </Grid>
-          <Grid item xs = {12} md = {6}>
-          <Box
-              sx={{
-                p: 3,
-                border: '1px solid',
-                borderColor: 'grey.300',
-                borderRadius: 2,
-              }}
-              >
-            <Typography variant="h5" gutterBottom>Pro</Typography>
-            <Typography variant="h6" gutterBottom>$10 / month</Typography>
-            <Typography>
-              {''}
               Unlimited flashcards and storage, with priority support.</Typography>
-              <Button variant="contained" color="primary" sx={{mt: 2}} onClick={handleSubmit}>Choose Pro</Button>
+              <Button variant="contained" color="primary" sx={{mt: 2, backgroundColor: '#344e41', '&:hover': {backgroundColor: '#a3b18a',},}} onClick={handleSubmit}>Choose Pro</Button>
             </Box>
           </Grid>
         </Grid>
+      </Box>
+      </Box>
+      {/* -------------------------------------------------------------- */}
+      <Box
+        component="footer"
+        sx={{
+          py: 3,
+          px: 2,
+          mt: 'auto',
+          backgroundColor: '#588157',
+          textAlign: 'center',
+        }}
+      >
+        <Typography variant="body2" color="text.secondary">
+          © 2024 Study Buddy
+        </Typography>
       </Box>
     </Container>
   )
